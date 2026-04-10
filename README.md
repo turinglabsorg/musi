@@ -2,42 +2,47 @@
 
 > "Can AI read sheet music?" — "Hold my metronome."
 
-**musi** snaps a photo of sheet music, feeds it to an open-source vision AI, and spits out an MP3 you can actually listen to. Yes, it's that simple. Yes, it works. No, it won't replace your piano teacher.
+**musi** snaps a photo of sheet music, feeds it to an open-source vision AI, and spits out an MP3 you can actually listen to. Send it via Telegram or run it from the command line.
 
 ```
 photo of sheet music → vision LLM reads the notes → synthesizer goes brrr → MP3
 ```
 
-## The origin story
+## Telegram Bot
 
-We pointed Claude at a photo of an Italian lullaby ("La luna cammina sull'acqua") and asked it to read the notes. It tried its best. Then we pointed Qwen3-VL at the same photo and it nailed the key signature (D minor), the descending scale, even the dynamics marking. Then we fed it Beethoven's 5th and it correctly read **G-G-G-Eb** — *ta-ta-ta-TAAAA!* — 91 notes from a blurry image. So we made it a tool.
+The easiest way to use musi. Just open Telegram, find the bot, and send a photo.
 
-## What it does
+**Commands:**
+| Command | Description |
+|---------|-------------|
+| `/start` | Welcome message |
+| `/help` | Tips for best results |
+| `/instrument` | Choose instrument (piano, flute, organ, music_box, drums) |
+| `/bpm` | Override tempo (e.g. `/bpm 120`, `/bpm auto`) |
 
-1. Sends your sheet music photo to a multimodal LLM (any Ollama-compatible vision model)
-2. The AI reads notes, key, tempo, dynamics, lyrics — returns structured JSON
-3. Synthesizes audio with additive synthesis + ADSR envelopes
-4. Encodes to MP3 via ffmpeg
+**How it works:**
+1. Send a photo of sheet music
+2. The bot reads the notes with a vision AI
+3. Synthesizes audio and sends back an MP3
 
-## Setup
+Per-user preferences (instrument, BPM) are remembered during the session.
+
+### Deploy with Docker
 
 ```bash
-pip install numpy scipy    # audio synthesis
-# ffmpeg required for MP3 (falls back to WAV if missing)
-
-cp .env.example .env       # add your Ollama API key
+cp .env.example .env   # add your tokens
+docker build -t musi-bot .
+docker run -d --name musi-bot --restart unless-stopped --env-file .env musi-bot
 ```
 
-Works with [Ollama](https://ollama.com) (local or cloud), or any OpenAI-compatible vision API.
-
-## Usage
+## CLI
 
 ```bash
 # basic — photo in, MP3 out
 python3 musi.py spartito.jpg
 
 # choose your instrument
-python3 musi.py score.png --instrument music_box
+python3 musi.py score.png --instrument drums
 
 # just read the notes, no audio
 python3 musi.py beethoven.jpg --dry-run
@@ -49,7 +54,7 @@ python3 musi.py waltz.jpg --bpm 120 --json
 python3 musi.py photo.jpg -o my_melody.mp3
 ```
 
-### Instruments
+## Instruments
 
 | Name | Vibe |
 |------|------|
@@ -57,14 +62,27 @@ python3 musi.py photo.jpg -o my_melody.mp3
 | `flute` | Soft and breathy. Good for lullabies. |
 | `organ` | Full and churchy. Bach would approve. |
 | `music_box` | Tiny and sparkly. Instant nostalgia. |
+| `drums` | Kick, snare, hihat, toms, ride, crash. For percussion scores. |
+
+## Setup
+
+```bash
+pip install numpy scipy python-telegram-bot   # bot + audio synthesis
+# ffmpeg required for MP3 (falls back to WAV if missing)
+
+cp .env.example .env   # add your tokens
+```
 
 ### Environment variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
+| `TELEGRAM_BOT_TOKEN` | — | Telegram bot token from @BotFather |
 | `OLLAMA_BASE_URL` | `http://localhost:11434/v1` | Vision API endpoint |
 | `OLLAMA_API_KEY` | `ollama` | API key |
 | `OLLAMA_VISION_MODEL` | `qwen3-vl:235b-cloud` | Vision model |
+
+Works with [Ollama](https://ollama.com) (local or cloud), or any OpenAI-compatible vision API.
 
 ## Examples
 
@@ -126,9 +144,10 @@ Honestly? It depends on the photo. Clean, high-res scans work great. Blurry phon
 ## Tech stack
 
 - **Vision**: Any Ollama-compatible multimodal model (tested with Qwen3-VL 235B)
-- **Audio**: NumPy + SciPy (additive synthesis, no external audio libs)
+- **Audio**: NumPy + SciPy (additive synthesis, ADSR envelopes, noise-based drums)
 - **Encoding**: ffmpeg for MP3
-- **Dependencies**: Just `numpy` and `scipy`. That's it. One file. 350 lines.
+- **Bot**: python-telegram-bot (async, polling mode)
+- **Deploy**: Docker (python:3.12-slim + ffmpeg)
 
 ## License
 
