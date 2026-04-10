@@ -62,7 +62,65 @@ INSTRUMENTS = {
     "flute": {"harmonics": [1.0, 0.1, 0.02], "attack": 0.08, "decay": 0.05, "sustain": 0.8, "release": 0.1},
     "organ": {"harmonics": [1.0, 0.5, 0.25, 0.12, 0.06], "attack": 0.01, "decay": 0.02, "sustain": 0.9, "release": 0.05},
     "music_box": {"harmonics": [1.0, 0.6, 0.3, 0.15], "attack": 0.005, "decay": 0.3, "sustain": 0.2, "release": 0.4},
+    "drums": {"type": "percussion"},
 }
+
+DRUM_MAP = {
+    "C4": "kick", "D4": "snare", "E4": "snare_rim",
+    "F4": "tom_low", "G4": "tom_mid", "A4": "tom_high",
+    "F#4": "hihat_closed", "Gb4": "hihat_closed",
+    "A#4": "hihat_open", "Bb4": "hihat_open",
+    "B4": "ride", "C#5": "crash", "Db5": "crash",
+    "C5": "kick", "D5": "snare", "E5": "hihat_closed",
+    "F5": "ride", "G5": "crash",
+}
+
+
+def generate_drum_hit(drum_type, duration, volume=0.5):
+    n_samples = int(SAMPLE_RATE * duration)
+    t = np.linspace(0, duration, n_samples, endpoint=False)
+
+    if drum_type == "kick":
+        freq_sweep = 150 * np.exp(-t * 30) + 40
+        phase = np.cumsum(freq_sweep) / SAMPLE_RATE * 2 * np.pi
+        wave = np.sin(phase) * np.exp(-t * 8)
+        noise = np.random.randn(n_samples) * 0.15 * np.exp(-t * 40)
+        wave = wave + noise
+    elif drum_type in ("snare", "snare_rim"):
+        tone = np.sin(2 * np.pi * 200 * t) * np.exp(-t * 20)
+        noise = np.random.randn(n_samples) * 0.6 * np.exp(-t * 15)
+        wave = tone * 0.4 + noise
+        if drum_type == "snare_rim":
+            wave *= 0.7
+    elif drum_type.startswith("tom"):
+        freq = {"tom_low": 80, "tom_mid": 120, "tom_high": 160}.get(drum_type, 120)
+        wave = np.sin(2 * np.pi * freq * t) * np.exp(-t * 10)
+        wave += np.random.randn(n_samples) * 0.1 * np.exp(-t * 25)
+    elif drum_type == "hihat_closed":
+        wave = np.random.randn(n_samples) * np.exp(-t * 50)
+        b, a = [1, -0.98], [1, 0]
+        from scipy.signal import lfilter
+        wave = lfilter(b, a, wave)
+    elif drum_type == "hihat_open":
+        wave = np.random.randn(n_samples) * np.exp(-t * 8)
+        from scipy.signal import lfilter
+        b, a = [1, -0.98], [1, 0]
+        wave = lfilter(b, a, wave)
+    elif drum_type == "ride":
+        wave = np.random.randn(n_samples) * np.exp(-t * 5)
+        wave += np.sin(2 * np.pi * 300 * t) * 0.3 * np.exp(-t * 12)
+    elif drum_type == "crash":
+        wave = np.random.randn(n_samples) * np.exp(-t * 3)
+        from scipy.signal import lfilter
+        b, a = [1, -0.95], [1, 0]
+        wave = lfilter(b, a, wave)
+    else:
+        wave = np.random.randn(n_samples) * np.exp(-t * 20)
+
+    peak = np.max(np.abs(wave))
+    if peak > 0:
+        wave = wave / peak * volume
+    return wave
 
 VISION_PROMPT = """You are a music notation reader. Analyze this image of sheet music and extract the musical information.
 
@@ -93,6 +151,15 @@ Rules for the notes array:
 - IMPORTANT: Use ASCII only for accidentals: "b" for flat, "#" for sharp. Never use unicode symbols like ♭ or ♯.
 - Look for time signature and tempo markings.
 - Limit output to the notes actually visible in the image. Do not repeat or loop patterns.
+- For DRUM/PERCUSSION notation (single-line staff or staff with x noteheads):
+  - Bass drum / kick → C4
+  - Snare → D4
+  - Floor tom → F4, Mid tom → G4, High tom → A4
+  - Hi-hat closed (x notehead) → F#4
+  - Hi-hat open (o notehead) → Bb4
+  - Ride cymbal → B4
+  - Crash cymbal → C#5
+  - Use standard note durations as for pitched instruments.
 
 If you cannot read the notes clearly, make your best educated guess based on what you can see."""
 
@@ -131,12 +198,9 @@ def call_vision_llm(image_path, base_url, api_key, model):
             result = json.loads(resp.read().decode())
     except urllib.error.HTTPError as e:
         body = e.read().decode() if e.fp else ""
-        print(f"[musi] API error {e.code}: {body}", file=sys.stderr)
-        sys.exit(1)
+        raise RuntimeError(f"API error {e.code}: {body}") from e
     except urllib.error.URLError as e:
-        print(f"[musi] connection error: {e.reason}", file=sys.stderr)
-        print("[musi] is Ollama running? try: ollama serve", file=sys.stderr)
-        sys.exit(1)
+        raise RuntimeError(f"Connection error: {e.reason}. Is Ollama running?") from e
 
     content = result.get("choices", [{}])[0].get("message", {}).get("content", "")
     return content
@@ -188,14 +252,10 @@ def parse_music_data(raw_response):
             data = json.loads(cleaned)
             print("[musi] warning: repaired truncated JSON from LLM", file=sys.stderr)
         except json.JSONDecodeError as e:
-            print(f"[musi] failed to parse LLM response: {e}", file=sys.stderr)
-            print(f"[musi] raw response:\n{raw_response}", file=sys.stderr)
-            sys.exit(1)
+            raise RuntimeError(f"Failed to parse LLM response: {e}\nRaw: {raw_response}") from e
 
     if "notes" not in data or not data["notes"]:
-        print("[musi] no notes found in the response", file=sys.stderr)
-        print(f"[musi] raw response:\n{raw_response}", file=sys.stderr)
-        sys.exit(1)
+        raise RuntimeError(f"No notes found in the response.\nRaw: {raw_response}")
 
     return data
 
@@ -244,6 +304,11 @@ def synthesize(music_data, bpm_override=None, instrument="piano"):
         if pitch == REST_TOKEN or pitch.upper() == "REST":
             silence = np.zeros(int(SAMPLE_RATE * duration))
             samples = np.concatenate([samples, silence])
+        elif instrument == "drums":
+            drum_type = DRUM_MAP.get(pitch, "snare")
+            hit = generate_drum_hit(drum_type, duration, volume=volume)
+            gap = np.zeros(int(0.01 * SAMPLE_RATE))
+            samples = np.concatenate([samples, hit, gap])
         else:
             freq = NOTE_FREQS.get(pitch)
             if freq is None:
@@ -254,8 +319,7 @@ def synthesize(music_data, bpm_override=None, instrument="piano"):
             samples = np.concatenate([samples, tone, gap])
 
     if len(samples) == 0:
-        print("[musi] no audio generated", file=sys.stderr)
-        sys.exit(1)
+        raise RuntimeError("No audio generated — all notes were unrecognized")
 
     # Simple reverb
     delay = int(0.12 * SAMPLE_RATE)
@@ -326,8 +390,12 @@ def main():
 
     # Step 1: Vision LLM reads the sheet music
     print(f"[musi] analyzing: {args.image}")
-    raw = call_vision_llm(args.image, base_url, api_key, model)
-    music_data = parse_music_data(raw)
+    try:
+        raw = call_vision_llm(args.image, base_url, api_key, model)
+        music_data = parse_music_data(raw)
+    except RuntimeError as e:
+        print(f"[musi] {e}", file=sys.stderr)
+        sys.exit(1)
 
     title = music_data.get("title", "unknown")
     key = music_data.get("key", "?")
