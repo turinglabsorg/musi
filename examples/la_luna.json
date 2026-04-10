@@ -1,0 +1,50 @@
+{
+  "title": "La luna cammina sull'acqua",
+  "key": "D minor",
+  "time_signature": "3/4",
+  "tempo_bpm": 80,
+  "dynamics": "p",
+  "lyrics": "La lu - na cam - mi - na sul l'acqua",
+  "notes": [
+    {
+      "pitch": "D4",
+      "duration": 1.0,
+      "lyric": "La"
+    },
+    {
+      "pitch": "C4",
+      "duration": 0.5,
+      "lyric": "lu-"
+    },
+    {
+      "pitch": "Bb3",
+      "duration": 0.5,
+      "lyric": "na"
+    },
+    {
+      "pitch": "A3",
+      "duration": 0.5,
+      "lyric": "cam-"
+    },
+    {
+      "pitch": "Bb3",
+      "duration": 0.5,
+      "lyric": "mi-"
+    },
+    {
+      "pitch": "C4",
+      "duration": 0.5,
+      "lyric": "na"
+    },
+    {
+      "pitch": "D4",
+      "duration": 0.5,
+      "lyric": "sul"
+    },
+    {
+      "pitch": "C4",
+      "duration": 0.5,
+      "lyric": "l'acqua"
+    }
+  ]
+}

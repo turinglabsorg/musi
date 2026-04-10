@@ -66,13 +66,62 @@ python3 musi.py photo.jpg -o my_melody.mp3
 | `OLLAMA_API_KEY` | `ollama` | API key |
 | `OLLAMA_VISION_MODEL` | `qwen3-vl:235b-cloud` | Vision model |
 
+## Examples
+
+Real results. No cherry-picking. These are actual outputs from `musi`.
+
+### Italian lullaby — "La luna cammina sull'acqua"
+
+A rotated phone photo of sheet music from an old songbook.
+
+<img src="examples/la_luna.png" width="300">
+
+```bash
+$ python3 musi.py examples/la_luna.png
+[musi] title: La luna cammina sull'acqua
+[musi] key: D minor, tempo: 80 bpm, notes: 8
+[musi] lyrics: La lu - na cam - mi - na sul l'acqua
+[musi] notes: D4, C4, Bb3, A3, Bb3, C4, D4, C4
+```
+
+[Listen to the result (examples/la_luna.mp3)](examples/la_luna.mp3)
+
+<details>
+<summary>Extracted JSON</summary>
+
+```json
+{
+  "title": "La luna cammina sull'acqua",
+  "key": "D minor",
+  "time_signature": "3/4",
+  "tempo_bpm": 80,
+  "dynamics": "p",
+  "lyrics": "La lu - na cam - mi - na sul l'acqua"
+}
+```
+
+</details>
+
+### Beethoven's 5th Symphony
+
+The most recognizable four notes in music history. From a digital score.
+
+<img src="examples/beethoven_5th.png" width="500">
+
+```bash
+$ python3 musi.py examples/beethoven_5th.png
+[musi] title: Beethoven's 5th Symphony
+[musi] key: Eb major, tempo: 100 bpm, notes: 82
+[musi] notes: G3, G3, G3, Eb3, REST, F3, F3, F3, D3, ...
+```
+
+[Listen to the result (examples/beethoven_5th.mp3)](examples/beethoven_5th.mp3)
+
+**G-G-G-Eb** — *ta-ta-ta-TAAAA!* Nailed it. 82 notes read from 2 systems of piano score, tempo picked up from the `♩= 100` marking.
+
 ## How accurate is it?
 
 Honestly? It depends on the photo. Clean, high-res scans work great. Blurry phone photos of your grandma's songbook? It'll give it a solid try. The AI might occasionally hallucinate a sharp or miss a rest, but the melody will be recognizable. Think of it as "AI karaoke for sheet music."
-
-**Beethoven's 5th** — nailed the iconic motif, read 91 notes across 2 systems, got the tempo from the score marking.
-
-**Italian lullaby** — correctly identified D minor, read the descending scale, caught the `p` dynamic.
 
 ## Tech stack
 

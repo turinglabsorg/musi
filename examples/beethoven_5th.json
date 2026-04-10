@@ -1,0 +1,420 @@
+{
+  "title": "Beethoven's 5th Symphony",
+  "key": "Eb major",
+  "time_signature": "4/4",
+  "tempo_bpm": 100,
+  "dynamics": "f",
+  "lyrics": "",
+  "notes": [
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.75,
+      "lyric": ""
+    },
+    {
+      "pitch": "REST",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "F3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "F3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "F3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "D3",
+      "duration": 0.75,
+      "lyric": ""
+    },
+    {
+      "pitch": "REST",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "E3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "E3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "E3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "C3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "REST",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "F3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "F3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "F3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "D3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "REST",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "F3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 1.0,
+      "lyric": ""
+    },
+    {
+      "pitch": "REST",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "F3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "REST",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "REST",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "C3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "C3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "C3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Ab2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "C3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "C3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "C3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Ab2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "REST",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "C3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "REST",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "C3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "G2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "REST",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Eb3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "C3",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    },
+    {
+      "pitch": "Bb2",
+      "duration": 0.25,
+      "lyric": ""
+    }
+  ]
+}
