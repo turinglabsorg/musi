@@ -194,7 +194,7 @@ def call_vision_llm(image_path, base_url, api_key, model):
 
     print(f"[musi] calling {model} via {base_url}...")
     try:
-        with urllib.request.urlopen(req, timeout=180) as resp:
+        with urllib.request.urlopen(req, timeout=600) as resp:
             result = json.loads(resp.read().decode())
     except urllib.error.HTTPError as e:
         body = e.read().decode() if e.fp else ""
